@@ -1,0 +1,45 @@
+<h1>My post:</h1>
+
+<% if post.nil? %>
+  <p>There is no such post!</p>
+<% else %>
+  <div>
+    <div class="jumbotron">
+      <h1 class="display-4">
+        <a href="/post?name=<%= post['name'] %>">
+          <%= post['name'] %> -
+          <form action="/delete" method="post">
+            <input type="hidden" name="name" value="<%= post['name'] %>">
+            <button type="submit" class="btn btn-danger">Delete post!</button>
+          </form>
+        </a>
+      </h1>
+      <p class="lead">Post by <%= post['author'] %> at <p><%= post['time'] %></p>
+      <hr class="my-4">
+      <p><%= post['body'] %></p>
+    </div>
+
+    <form action="/create/comment" method="post">
+      <input type="text" name="text" placeholder="write your comment!">
+      <input type="hidden" name="name" value="<%= post['name'] %>">
+      <input type="submit" value="comment!">
+    </form>
+
+    <% unless post['comments'].nil? %>
+      <ul>
+        <% post['comments'].each do |comment| %>
+          <li>
+            <%= comment['author'] %> said: <%= comment['text'] %>
+            <% if !user.empty? && comment['author'] == user %>
+              <form action="/delete/comment" method="post">
+                <input type="hidden" name="post_name" value="<%= post['name'] %>">
+                <input type="hidden" name="comment" value="<%= comment['text'] %>">
+                <input type="submit" name="" value="delete comment!">
+              </form>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+<% end %>

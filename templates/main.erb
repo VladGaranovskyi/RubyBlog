@@ -1,0 +1,27 @@
+<a href="/create">New Post</a>
+
+<%= erb :user_actions %>
+
+<form action="/search/author" method="get">
+  <input type="text" name="value" placeholder="search by author">
+  <input type="submit" name="submit" value="Search!">
+</form>
+
+<% if posts.count == 0 %>
+  <h3>Sorry, no posts for this criteria</h3>
+<% end %>
+
+<% posts.each do |post| %>
+  <div class="jumbotron">
+    <h1 class="display-4">
+      <a href="/post?name=<%= post['name'] %>">
+        <%= post['name'] %>
+      </a>
+    </h1>
+      <p class="lead">Post by <%= post['author'] %> at <p><%= post['time'] %></p>
+      <hr class="my-4">
+      <p><%= post['body'] %></p>
+    </div>
+<% end %>
+
+<%= erb :pagination, locals: { count: count, page_size: page_size } %>
